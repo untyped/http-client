@@ -1,7 +1,7 @@
 #lang scheme/base
 
 (require
- (planet schematics/schemeunit:3/test)
+ rackunit
  "protocol-test.ss")
 
 (define/provide-test-suite all-tests

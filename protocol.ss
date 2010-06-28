@@ -1,4 +1,4 @@
-#lang typed/scheme
+#lang typed/racket
 
 (: write-request (Bytes Bytes Bytes Output-Port -> Void))
 (define (write-request method server resource output)
@@ -15,21 +15,20 @@
 (define CR 13)
 (define LF 10)
 
-(define-type-alias constant-writer
-  (case-lambda (-> Void) (Output-Port -> Void)))
-
 (define-syntax-rule (define-constant-writer (name op) expr ...)
   (begin
-    (: name constant-writer)
-    (define (name [op (current-output-port)])
-      expr ...)))
+    (: name (case-lambda (-> Void) (Output-Port -> Void)))
+    (define name
+      (case-lambda:
+        [() (name (current-output-port))]
+        [([op : Output-Port]) expr ...]))))
   
 (define-constant-writer (write-space output)
-  (write-byte output SP))
+  (write-byte SP output))
 
 (define-constant-writer (write-crlf output)
-  (write-byte output CR)
-  (write-byte output LF))
+  (write-byte CR output)
+  (write-byte LF output))
 
 
 (provide

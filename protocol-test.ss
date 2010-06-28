@@ -1,7 +1,7 @@
-#lang scheme/base
+#lang racket/base
 
 (require
- (planet schematics/schemeunit:3)
+ rackunit
  "protocol.ss")
 
 (define (request-bytes method server resource)
